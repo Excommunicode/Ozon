@@ -2,6 +2,7 @@ package kz.ozon.service;
 
 import jakarta.persistence.EntityManager;
 import kz.ozon.dto.category.CategoryDto;
+import kz.ozon.exception.DataConflictException;
 import kz.ozon.exception.NotFoundException;
 import kz.ozon.mapper.CategoryMapper;
 import kz.ozon.model.Category;
@@ -24,7 +25,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
 @SpringBootTest
@@ -59,6 +61,13 @@ class CategoryServiceImplTest {
 
         CategoryDto categoryDto2 = getCategoryDto(1L);
         assertEquals(categoryDto1, categoryDto2);
+    }
+
+    @Test
+    void addCategoryDtoWithExistsName() {
+        categoryAdminService.addCategoryDto(categoryDto);
+
+        assertThrows(DataConflictException.class, () -> categoryAdminService.addCategoryDto(categoryDto));
     }
 
 
@@ -113,8 +122,13 @@ class CategoryServiceImplTest {
     @Test
     void getCategoryDto() {
         CategoryDto categoryDto1 = categoryAdminService.addCategoryDto(categoryDto);
+        assertEquals(categoryPublicService.getCategoryDto(1L), categoryDto1);
+    }
 
-        assertEquals(getCategoryDto(1L), categoryDto1);
+    @Test
+    void getCategoryDto_WithNoId() {
+        categoryAdminService.addCategoryDto(categoryDto);
+        assertThrows(NotFoundException.class, () -> categoryPublicService.getCategoryDto(1000L));
     }
 
     private CategoryDto getCategoryDto(Long id) {

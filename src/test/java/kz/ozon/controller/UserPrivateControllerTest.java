@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(UserPrivateController.class)
@@ -50,8 +51,8 @@ class UserPrivateControllerTest {
     @Test
     @SneakyThrows
     void saveUserDto() {
-        when(userPrivateService.addUserDto(eq(NEW_USER_DTO)))
-                .thenReturn(USER_DTO);
+        given(userPrivateService.addUserDto(eq(NEW_USER_DTO)))
+                .willReturn(USER_DTO);
 
         mockMvc.perform(MockMvcRequestBuilders.post(PATH)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -65,11 +66,8 @@ class UserPrivateControllerTest {
     @Test
     @SneakyThrows
     void updateUserDto() {
-        NEW_USER_DTO.setName("bebra");
-        USER_DTO.setName("bebra");
-
-        when(userPrivateService.updateUserDto(anyLong(), eq(NEW_USER_DTO)))
-                .thenReturn(USER_DTO);
+        given(userPrivateService.updateUserDto(anyLong(), eq(NEW_USER_DTO)))
+                .willReturn(USER_DTO);
 
         mockMvc.perform(MockMvcRequestBuilders.patch(PATH + "/{userId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +85,7 @@ class UserPrivateControllerTest {
     @Test
     @SneakyThrows
     void getUSER_DTO() {
-        when(userPrivateService.getUserDto(1L)).thenReturn(USER_DTO);
+        given(userPrivateService.getUserDto(1L)).willReturn(USER_DTO);
 
         mockMvc.perform(MockMvcRequestBuilders.get(PATH + "/{userId}", 1L))
                 .andExpect(MockMvcResultMatchers.status().isOk())
