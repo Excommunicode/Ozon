@@ -1,5 +1,7 @@
 package kz.ozon.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kz.ozon.dto.category.CategoryDto;
 import kz.ozon.service.api.CategoryAdminService;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "admin/categories")
+@RequestMapping(path = "/admin/categories")
+@Tag(name = "Admin: Категории", description = "Api для работы с категориями")
 public class CategoryAdminController {
     private final CategoryAdminService categoryAdminService;
 
+    @Operation(summary = "Добавление новог")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto addCategoryDto(@Valid @RequestBody CategoryDto categoryDto) {

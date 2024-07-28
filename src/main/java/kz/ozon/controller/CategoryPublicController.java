@@ -1,5 +1,6 @@
 package kz.ozon.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import kz.ozon.dto.category.CategoryDto;
@@ -19,6 +20,7 @@ import static kz.ozon.constant.Constant.LIMIT;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/categories")
+@Tag(name = "Public: Категории", description = "Публичный Api для работы с категориями")
 public class CategoryPublicController {
     private final CategoryPublicService categoryPublicService;
 

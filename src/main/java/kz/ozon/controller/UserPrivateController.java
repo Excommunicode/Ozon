@@ -50,9 +50,7 @@ public class UserPrivateController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto saveUserDto(@Valid
-                                   @RequestBody NewUserDto newUserDto) {
-
+    public UserDto saveUserDto(@Valid @RequestBody NewUserDto newUserDto) {
         return userService.addUserDto(newUserDto);
     }
 
@@ -65,7 +63,7 @@ public class UserPrivateController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)
     })
     @PatchMapping("/{userId}")
-    public UserDto updateUserDto(@PathVariable Long userId, @RequestBody NewUserDto newUserDto) {
+    public UserDto updateUserDto(@PathVariable Long userId, @Valid @RequestBody NewUserDto newUserDto) {
         return userService.updateUserDto(userId, newUserDto);
     }
 
