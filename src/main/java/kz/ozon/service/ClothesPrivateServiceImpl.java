@@ -45,8 +45,8 @@ public class ClothesPrivateServiceImpl implements ClothesPrivateService {
         return savedClothesDto;
     }
 
-    @Transactional
     @Override
+    @Transactional
     public ClothesDto updateClothesDto(Long clothesId, NewClothesDto newClothesDto) {
         Clothes clothes = findClothesById(clothesId);
 
@@ -61,16 +61,19 @@ public class ClothesPrivateServiceImpl implements ClothesPrivateService {
     }
 
     private ClothesDto findByIdClothesDto(Long clothesId) {
+
         return clothesMapper.toClosesDto(findClothesById(clothesId));
     }
 
     private Clothes findClothesById(Long clothesId) {
+
         return clothesRepository.findById(clothesId).orElseThrow(() -> NotFoundException.builder()
                 .message(String.format("Clothes with id: %s not found", clothesId))
                 .build());
     }
 
     private void existsUserById(Long userId) {
+
         if (!userRepository.existsById(userId)) {
             throw NotFoundException.builder()
                     .message(String.format("User with id: %s not found", userId))
@@ -79,6 +82,7 @@ public class ClothesPrivateServiceImpl implements ClothesPrivateService {
     }
 
     private void existsCategoryById(Long categoryId) {
+
         if (!categoryRepository.existsById(categoryId)) {
             throw NotFoundException.builder()
                     .message(String.format("Category with id: %s not found", categoryId))

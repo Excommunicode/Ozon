@@ -1,6 +1,7 @@
 package kz.ozon.service;
 
 import jakarta.persistence.EntityManager;
+import kz.ozon.base.BaseTest;
 import kz.ozon.dto.product.ClothesDto;
 import kz.ozon.dto.product.NewClothesDto;
 import kz.ozon.mapper.ClothesMapper;
@@ -18,21 +19,17 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
-
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Transactional
-@SpringBootTest
+
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Sql(scripts = "/schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-class ClothesPrivateServiceImplTest {
+class ClothesPrivateServiceImplTest extends BaseTest {
     private final ClothesPrivateService clothesPrivateService;
     private final ClothesRepository clothesRepository;
     private final ClothesMapper clothesMapper;
@@ -111,7 +108,5 @@ class ClothesPrivateServiceImplTest {
         assertNotEquals(addClothesDto.getDescription(), retrievedClothesDto.getDescription(), "Descriptions should be updated");
         assertNotEquals(addClothesDto.getPrice(), retrievedClothesDto.getPrice(), "Prices should be updated");
     }
-
-
 
 }

@@ -1,6 +1,7 @@
 package kz.ozon.service;
 
 import jakarta.persistence.EntityManager;
+import kz.ozon.base.BaseTest;
 import kz.ozon.dto.category.CategoryDto;
 import kz.ozon.exception.DataConflictException;
 import kz.ozon.exception.NotFoundException;
@@ -16,9 +17,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,11 +26,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@Transactional
-@SpringBootTest
+
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Sql(scripts = "/schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-class CategoryServiceImplTest {
+class CategoryServiceImplTest extends BaseTest {
     private final CategoryAdminService categoryAdminService;
     private final CategoryPublicService categoryPublicService;
     private final CategoryMapper categoryMapper;
