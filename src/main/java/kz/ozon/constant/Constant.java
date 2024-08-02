@@ -7,4 +7,6 @@ public class Constant {
     public static final String DATA_TIME_FORMATTER = "yyyy-MM-dd HH:mm:ss";
     public static final String INITIAL_X = "0";
     public static final String LIMIT = "10";
+    public static final String ADMIN = "ADMIN";
+    public static final String USER = "USER";
 }

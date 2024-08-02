@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class NewClothesDto  {
-    private String name;
+public class NewClothesDto {
+    private String username;
     private String description;
     private Double price;
     private String color;

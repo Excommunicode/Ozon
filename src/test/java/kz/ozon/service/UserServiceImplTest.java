@@ -56,10 +56,11 @@ class UserServiceImplTest extends BaseTest {
     void addUserDto() {
 
         UserDto userDto1 = userPrivateService.addUserDto(newUserDto);
-        System.err.println(userDto1.getId());
+
         entityManager.clear();
 
         UserDto findUserDto = findUserDto(1L);
+
         assertEquals(userDto1, findUserDto);
     }
 
@@ -69,12 +70,13 @@ class UserServiceImplTest extends BaseTest {
         userPrivateService.addUserDto(newUserDto);
 
         String s = Instancio.create(String.class);
-        newUserDto.setName(s);
+        newUserDto.setUsername(s);
 
         UserDto updateUserDto = userPrivateService.updateUserDto(1L, newUserDto);
 
+
         UserDto userDto1 = findUserDto(updateUserDto.getId());
-        assertEquals(s, userDto1.getName());
+        assertEquals(s, userDto1.getUsername());
 
     }
 

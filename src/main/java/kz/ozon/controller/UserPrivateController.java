@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import kz.ozon.dto.user.NewUserDto;
@@ -15,6 +14,7 @@ import kz.ozon.exception.ApiError;
 import kz.ozon.service.api.UserPrivateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +30,8 @@ import java.util.List;
 
 import static kz.ozon.constant.Constant.INITIAL_X;
 import static kz.ozon.constant.Constant.LIMIT;
+import static kz.ozon.util.Marker.OnCreate;
+import static kz.ozon.util.Marker.OnUpdate;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,9 +50,10 @@ public class UserPrivateController {
             @ApiResponse(responseCode = "409", description = "Нарушение целостности данных (например, дублирование уникального значения)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiError.class)))
     })
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto saveUserDto(@Valid @RequestBody NewUserDto newUserDto) {
+    public UserDto saveUserDto(@Validated(OnCreate.class) @RequestBody NewUserDto newUserDto) {
         return userService.addUserDto(newUserDto);
     }
 
@@ -63,7 +66,7 @@ public class UserPrivateController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)
     })
     @PatchMapping("/{userId}")
-    public UserDto updateUserDto(@PathVariable Long userId, @Valid @RequestBody NewUserDto newUserDto) {
+    public UserDto updateUserDto(@PathVariable Long userId, @Validated(OnUpdate.class) @RequestBody NewUserDto newUserDto) {
         return userService.updateUserDto(userId, newUserDto);
     }
 

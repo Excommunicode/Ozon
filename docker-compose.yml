@@ -14,7 +14,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=iamroot
 
   db:
-    image: postgres:14-alpine
+    image: postgres:16-alpine
     container_name: db
     ports:
       - "6541:5432"

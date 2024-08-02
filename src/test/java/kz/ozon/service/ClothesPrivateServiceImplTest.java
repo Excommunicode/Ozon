@@ -99,7 +99,7 @@ class ClothesPrivateServiceImplTest extends BaseTest {
 
         assertNotNull(retrievedClothesDto, "Retrieved ClothesDto should not be null");
         assertEquals(updateClothesDto.getId(), retrievedClothesDto.getId(), "IDs should match");
-        assertEquals(toUpdateClothesDto.getName(), retrievedClothesDto.getName(), "Names should match");
+        assertEquals(toUpdateClothesDto.getUsername(), retrievedClothesDto.getName(), "Names should match");
         assertEquals(toUpdateClothesDto.getDescription(), retrievedClothesDto.getDescription(), "Descriptions should match");
         assertEquals(toUpdateClothesDto.getPrice(), retrievedClothesDto.getPrice(), "Prices should match");
 

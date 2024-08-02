@@ -1,6 +1,7 @@
 package kz.ozon.dto.product;
 
 import kz.ozon.enums.ClothingSize;
+import kz.ozon.enums.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,4 +19,5 @@ public class ClothesDto extends ProductDto {
     private String color;
     private ClothingSize size;
     private String material;
+    private Gender gender;
 }

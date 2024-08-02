@@ -6,7 +6,6 @@ import kz.ozon.service.api.CategoryAdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @WebMvcTest(CategoryAdminController.class)
@@ -54,7 +54,7 @@ class CategoryAdminControllerTest {
     @Test
     @SneakyThrows
     void updateCategoryDto() {
-        given(categoryAdminService.updateCategory(Mockito.anyLong(), any(CategoryDto.class)))
+        given(categoryAdminService.updateCategory(anyLong(), any(CategoryDto.class)))
                 .willReturn(CATEGORY_DTO);
 
         mockMvc.perform(MockMvcRequestBuilders.patch(BEGINNING_PATH + CAT_ID, 1L)

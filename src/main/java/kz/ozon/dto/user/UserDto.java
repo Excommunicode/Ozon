@@ -16,7 +16,7 @@ public class UserDto {
     @Schema(description = "Идентификатор пользователя")
     private Long id;
     @Schema(description = "Имя пользователя")
-    private String name;
+    private String username;
     @Schema(description = "Почто пользователя")
     private String email;
 }

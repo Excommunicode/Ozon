@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,6 +28,7 @@ import java.util.Objects;
 public class UserServiceImpl implements UserPrivateService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -34,8 +36,12 @@ public class UserServiceImpl implements UserPrivateService {
         log.debug("Adding new user DTO: {}", newUserDto);
 
         checkExistsEmail(newUserDto.getEmail());
+        existsName(newUserDto.getUsername());
 
-        UserDto savedUserDto = userMapper.toUserDto(userRepository.save(userMapper.fromNewUserDto(newUserDto)));
+        User user = userMapper.fromNewUserDto(newUserDto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        UserDto savedUserDto = userMapper.toUserDto(userRepository.save(user));
 
         log.info("Added new user DTO with ID: {}", savedUserDto.getId());
         return savedUserDto;
@@ -46,11 +52,10 @@ public class UserServiceImpl implements UserPrivateService {
     public UserDto updateUserDto(Long userId, NewUserDto newUserDto) {
         log.debug("Updating user DTO with ID: {}", userId);
 
-        User userFromDb = userRepository.findById(userId).orElseThrow(() -> NotFoundException.builder()
-                .message(String.format("User with id %s not found", userId))
-                .build());
+        User userFromDb = findUserById(userId);
 
         checkEmailOnUpdate(newUserDto.getEmail(), userFromDb.getEmail());
+        existsNameWhenUpdate(newUserDto.getUsername(), userFromDb.getUsername());
 
         User updated = userMapper.updateUserDto(userFromDb, newUserDto);
 
@@ -100,7 +105,7 @@ public class UserServiceImpl implements UserPrivateService {
     private void checkExistsEmail(String email) {
         if (userRepository.existsByEmail(email)) {
             throw DataConflictException.builder()
-                    .message(String.format("This email: %s already be taken",email))
+                    .message(String.format("This email: %s already be taken", email))
                     .build();
         }
     }
@@ -120,9 +125,26 @@ public class UserServiceImpl implements UserPrivateService {
     }
 
     private UserDto findUserDtoById(Long userId) {
-        log.debug("Finding user DTO by ID: {}", userId);
-        return userMapper.toUserDto(userRepository.findById(userId).orElseThrow(() -> NotFoundException.builder()
+        return userMapper.toUserDto(findUserById(userId));
+    }
+
+    private User findUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> NotFoundException.builder()
                 .message(String.format("User with id: %s not found", userId))
-                .build()));
+                .build());
+    }
+
+    private void existsName(String username) {
+        if (userRepository.existsByUsername(username)) {
+            throw DataConflictException.builder()
+                    .message(String.format("User with username: %s already exists", username))
+                    .build();
+        }
+    }
+
+    private void existsNameWhenUpdate(String newUsername, String oldUsername) {
+        if (!Objects.equals(newUsername, oldUsername)) {
+            existsName(newUsername);
+        }
     }
 }

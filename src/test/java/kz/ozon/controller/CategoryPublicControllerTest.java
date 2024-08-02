@@ -49,7 +49,6 @@ class CategoryPublicControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(CATEGORIES)));
     }
-
     @Test
     @SneakyThrows
     void getCategoryDto() {
